@@ -11,7 +11,7 @@ import (
 
 var (
 	whoisVar string
-	banner   = "Usage: whodis [OPTIONS] DOMAIN\n"
+	banner   = "Usage: ./whodis [OPTIONS] DOMAIN\n"
 )
 
 func main() {
