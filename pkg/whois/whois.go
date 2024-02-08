@@ -1,6 +1,7 @@
 package whois
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 
@@ -15,16 +16,31 @@ func Whois(whoisVar string) {
 		}
 	}()
 	result, err := whois.Whois(whoisVar)
+
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		data, err := whoisparser.Parse(result)
+		whois, err := whoisparser.Parse(result)
 		isAddr := net.ParseIP(whoisVar)
+		data := map[string]string{
+			"domain":          whois.Domain.Domain,
+			"registrar":       whois.Registrar.Name,
+			"expiration_date": whois.Domain.ExpirationDate,
+		}
+
+		// Marshal the map into a JSON string
+		jsonString, err := json.Marshal(data)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
 		if isAddr != nil {
 			fmt.Println("Only valid domains are allowed.")
 		} else {
 			if err == nil {
-				fmt.Println("domain:", data.Domain.Domain, "|", "registrar:", data.Registrar.Name, "|", "expiration_date:", data.Domain.ExpirationDate)
+				fmt.Println(string(jsonString))
+				//				fmt.Println("domain:", data.Domain.Domain, "|", "registrar:", data.Registrar.Name, "|", "expiration_date:", data.Domain.ExpirationDate)
 			} else {
 				fmt.Print("")
 			}
