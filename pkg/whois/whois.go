@@ -30,17 +30,11 @@ func Whois(whoisVar string) {
 
 		// Marshal the map into a JSON string
 		jsonString, err := json.Marshal(data)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-
 		if isAddr != nil {
 			fmt.Println("Only valid domains are allowed.")
 		} else {
 			if err == nil {
 				fmt.Println(string(jsonString))
-				//				fmt.Println("domain:", data.Domain.Domain, "|", "registrar:", data.Registrar.Name, "|", "expiration_date:", data.Domain.ExpirationDate)
 			} else {
 				fmt.Print("")
 			}
